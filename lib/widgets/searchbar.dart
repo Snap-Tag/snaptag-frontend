@@ -8,14 +8,15 @@ class SearchBarWidget extends StatelessWidget {
     return Center(
       child: SizedBox(
         width: MediaQuery.of(context).size.width - 40,
-        child: const SearchBar(
-          trailing: [
+        child: SearchBar(
+          trailing: const [
             Icon(Icons.search),
             SizedBox(
               width: 10,
             )
           ],
           hintText: "Search your handwritten notes",
+          onSubmitted: (value) {},
         ),
       ),
     );

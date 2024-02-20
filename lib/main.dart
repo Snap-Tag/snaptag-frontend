@@ -1,8 +1,12 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:snaptag_frontend/screens/camerapage.dart';
 import 'package:snaptag_frontend/widgets/dashboard.dart';
 
-void main() {
+Future<void> main() async {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // final cameras = await availableCameras();
+  // firstCamera = cameras.first;
   runApp(const SnapTag());
 }
 
