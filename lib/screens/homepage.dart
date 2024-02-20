@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:snaptag_frontend/constants/theme.dart';
+import 'package:snaptag_frontend/widgets/imageslider.dart';
 import 'package:snaptag_frontend/widgets/searchbar.dart';
 import 'package:snaptag_frontend/widgets/text_widget.dart';
 
@@ -10,19 +10,17 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(toolbarHeight: 10),
-      body: Column(children: [
-        const SearchBarWidget(),
-        const TextWidget(text: "Recent Notes"),
-        Container(
-          height: 250,
-          color: ThemeColor.placeholder,
+      body: const SingleChildScrollView(
+        child: Column(
+          children: [
+            SearchBarWidget(),
+            TextWidget(text: "Recent Notes"),
+            ImageSlider(images: [1, 2, 3, 4, 5, 6, 7]),
+            TextWidget(text: "Favorites"),
+            ImageSlider(images: [1, 2, 3, 4, 5, 6, 7])
+          ],
         ),
-        const TextWidget(text: "Favorites"),
-        Container(
-          height: 250,
-          color: ThemeColor.placeholder,
-        )
-      ]),
+      ),
     );
   }
 }
