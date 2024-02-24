@@ -1,12 +1,3 @@
-class Image {
-  final String imageID;
-  final String imagePath;
-  Image({
-    required this.imageID,
-    required this.imagePath,
-  });
-}
-
 class Tags {
   final String tagID;
   final String tag;
@@ -14,13 +5,7 @@ class Tags {
     required this.tagID,
     required this.tag,
   });
-}
-
-class ImageTags {
-  final String imageID;
-  final String tagID;
-  ImageTags({
-    required this.imageID,
-    required this.tagID,
-  });
+  factory Tags.fromSqfliteDatabase(Map<String, dynamic> map) => Tags(
+      tagID: map['tagID']?.toString() ?? 'null',
+      tag: map['tag']?.toString() ?? 'null');
 }
