@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:snaptag_frontend/screens/searchedPage.dart';
 
 class SearchBarWidget extends StatelessWidget {
   const SearchBarWidget({super.key});
@@ -9,14 +10,18 @@ class SearchBarWidget extends StatelessWidget {
       child: SizedBox(
         width: MediaQuery.of(context).size.width - 40,
         child: SearchBar(
-          trailing: const [
-            Icon(Icons.search),
-            SizedBox(
+          trailing: [
+            IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
+            const SizedBox(
               width: 10,
             )
           ],
           hintText: "Search your handwritten notes",
-          onSubmitted: (value) {},
+          onSubmitted: (value) {
+            Navigator.of(context).push(MaterialPageRoute(builder: ((context) {
+              return SearchedPage(searchedString: value);
+            })));
+          },
         ),
       ),
     );

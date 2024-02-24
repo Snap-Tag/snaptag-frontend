@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:snaptag_frontend/screens/notesPage.dart';
 
 class ImageSlider extends StatelessWidget {
   final List<int> images;
@@ -13,14 +14,26 @@ class ImageSlider extends StatelessWidget {
       items: images.map((i) {
         return Builder(
           builder: (BuildContext context) {
-            return Container(
-              width: MediaQuery.of(context).size.width,
-              margin: EdgeInsets.symmetric(horizontal: 5.0),
-              child: Card(
-                elevation: 3,
-                child: Image.network(
-                  "https://codewithcurious.com/wp-content/uploads/2023/08/58-768x1089.png.webp",
-                  fit: BoxFit.contain,
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const NotesPage(
+                        imageUrl:
+                            "https://codewithcurious.com/wp-content/uploads/2023/08/58-768x1089.png.webp"),
+                  ),
+                );
+              },
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                child: Card(
+                  elevation: 3,
+                  child: Image.network(
+                    "https://codewithcurious.com/wp-content/uploads/2023/08/58-768x1089.png.webp",
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
             );
