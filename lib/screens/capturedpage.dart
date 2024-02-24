@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:snaptag_frontend/core/network.dart';
+import 'package:snaptag_frontend/services/network.dart';
 import 'package:snaptag_frontend/models/responseModel.dart';
 import 'package:snaptag_frontend/widgets/text_widget.dart';
 
