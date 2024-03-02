@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:snaptag_frontend/models/searchModel.dart';
 import 'package:snaptag_frontend/screens/notesPage.dart';
+import 'package:snaptag_frontend/services/network.dart';
 
 class SearchedPage extends StatelessWidget {
   final String searchedString;
@@ -10,7 +12,8 @@ class SearchedPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(searchedString)),
-      body: ListView.builder(
+      body: FutureBuilder<searchModel>(
+        future: SnapTagAPIRequest.getSearchImage(tags) ,
         itemCount: 5,
         itemBuilder: (context, index) {
           return GestureDetector(

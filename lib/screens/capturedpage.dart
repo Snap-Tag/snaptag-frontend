@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:snaptag_frontend/services/network.dart';
 import 'package:snaptag_frontend/models/responseModel.dart';
