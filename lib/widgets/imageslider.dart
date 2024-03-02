@@ -20,7 +20,7 @@ class ImageSlider extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => const NotesPage(
-                        imageUrl:
+                        imageData:
                             "https://codewithcurious.com/wp-content/uploads/2023/08/58-768x1089.png.webp"),
                   ),
                 );

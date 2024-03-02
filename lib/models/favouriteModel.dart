@@ -1,14 +1,16 @@
-
-import 'dart:ffi';
-
-class favouriteModel {
+class FavouriteModel {
   final String favImage;
-  final Int imageID;
-  favouriteModel({required this.imageID, required this.favImage});
+  final int imageID;
 
-  factory favouriteModel.fromJson(Map<Int, dynamic> json) {
-    return favouriteModel(
-        imageID: (json['image_id']),
-        favImage: json['saved_images']);
+  FavouriteModel({required this.imageID, required this.favImage});
+
+  factory FavouriteModel.fromJson(Map<String, dynamic> json) {
+    return FavouriteModel(
+        imageID: json['image_id'], favImage: json['saved_images']);
+  }
+
+  static List<FavouriteModel> fromJsonList(
+      List<Map<String, dynamic>> jsonList) {
+    return jsonList.map((item) => FavouriteModel.fromJson(item)).toList();
   }
 }
