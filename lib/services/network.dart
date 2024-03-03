@@ -1,11 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:snaptag_frontend/models/favouriteModel.dart';
-import 'package:snaptag_frontend/models/recentModel.dart';
+import 'package:snaptag_frontend/models/imageModel.dart';
 import 'package:snaptag_frontend/models/responseModel.dart';
 import 'package:snaptag_frontend/models/searchedModel.dart';
 
 class SnapTagAPIRequest {
-  static const serverIP = "192.168.1.2:8000";
+  static const serverIP = "192.168.204.144:8000";
   static Future<ResponseModel> getTags(String imagePath) async {
     const String url = "http://$serverIP/snapservice";
     final dio = Dio();
@@ -28,15 +27,15 @@ class SnapTagAPIRequest {
     return responseModel;
   }
 
-  static Future<List<RecentModel>> getRecentNotes() async {
-    const String url = "http://$serverIP/recentnotes";
+  static Future<List<ImageModel>> getRecentNotes() async {
+    const String url = "http://$serverIP/recentNotes";
     final dio = Dio();
 
     try {
       final Response response = await dio.get(url);
 
       if (response.statusCode == 200) {
-        List<RecentModel> recentList = RecentModel.fromJsonList(response.data);
+        List<ImageModel> recentList = ImageModel.fromJsonList(response.data);
 
         return recentList;
       } else {
@@ -48,9 +47,9 @@ class SnapTagAPIRequest {
     }
   }
 
-  static Future<List<FavouriteModel>> getFavouriteNotes() async {
+  static Future<List<ImageModel>> getFavouriteNotes() async {
     const String url =
-        "http://$serverIP/savednotes"; // Adjust the URL accordingly
+        "http://$serverIP/favoriteNotes"; // Adjust the URL accordingly
     final dio = Dio();
 
     try {
@@ -58,8 +57,8 @@ class SnapTagAPIRequest {
 
       if (response.statusCode == 200) {
         List<dynamic> data = response.data as List<dynamic>;
-        List<FavouriteModel> savedList =
-            data.map((json) => FavouriteModel.fromJson(json)).toList();
+        List<ImageModel> savedList =
+            data.map((json) => ImageModel.fromJson(json)).toList();
 
         return savedList;
       } else {

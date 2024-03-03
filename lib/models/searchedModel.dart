@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 class SearchedModel {
   final String imageData;
   final int imageId;
