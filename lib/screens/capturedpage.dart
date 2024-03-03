@@ -31,7 +31,7 @@ class _CapturedPageState extends State<CapturedPage> {
                       child: Card(
                           child: Image.memory(
                         base64Decode(snapshot.data!.croppedDocument),
-                        fit: BoxFit.fill,
+                        fit: BoxFit.contain,
                       )),
                     ),
                   ),
