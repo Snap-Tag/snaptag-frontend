@@ -102,10 +102,11 @@ class SnapTagAPIRequest {
   static Future<int> saveNote(String imageData, List<String> tags) async {
     const String url = "http://$serverIP/uploadNote";
     final dio = Dio();
-
+    print(base64Decode(imageData));
     try {
       final FormData formData = FormData.fromMap({
-        "image_file": await MultipartFile.fromString(imageData),
+        "image_file":
+            await MultipartFile.fromString(imageData, filename: "image.png"),
         "tags": tags.join(" "), // Convert tags list to JSON string
       });
 

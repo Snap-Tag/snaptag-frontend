@@ -133,6 +133,7 @@ class _CapturedPageState extends State<CapturedPage> {
     final tagsProvider = Provider.of<TagsProvider>(context, listen: false);
     final imageData = tagsProvider.imageData; // Your base64-encoded image data
     final tags = tagsProvider.tags;
+    print(imageData);
 
     try {
       final imageId = await SnapTagAPIRequest.saveNote(imageData, tags);
