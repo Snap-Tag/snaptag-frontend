@@ -6,7 +6,6 @@ import 'package:snaptag_frontend/services/network.dart';
 import 'package:snaptag_frontend/models/responseModel.dart';
 import 'package:snaptag_frontend/widgets/text_widget.dart';
 import 'package:snaptag_frontend/providers/tagsProvider.dart';
-import 'package:snaptag_frontend/screens/upload_done.dart';
 
 class CapturedPage extends StatefulWidget {
   final String imagePath;
@@ -21,113 +20,110 @@ class _CapturedPageState extends State<CapturedPage> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false, // Disable back navigation
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text("Captured Page"),
-          actions: [
-            IconButton(
-              onPressed: () {
-                _saveAndNavigate(context);
-              },
-              icon: Icon(Icons.done),
-            ),
-          ],
-        ),
-        body: SingleChildScrollView(
-          child: FutureBuilder<ResponseModel>(
-            future: SnapTagAPIRequest.getTags(widget.imagePath),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                final tagsProvider =
-                    Provider.of<TagsProvider>(context, listen: false);
-                tagsProvider.setTag(snapshot.data!.extractedTags);
-                tagsProvider.setImage(snapshot.data!.croppedDocument);
-
-                return Column(
-                  children: [
-                    Center(
-                      child: SizedBox(
-                        height: MediaQuery.of(context).size.height - 400,
-                        width: MediaQuery.of(context).size.width - 50,
-                        child: Card(
-                          child: Image.memory(
-                            base64Decode(snapshot.data!.croppedDocument),
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const TextWidget(text: "Tags"),
-                        IconButton(
-                          onPressed: () async {
-                            return showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: const Text('Add Tag'),
-                                  content: TextField(
-                                    controller: _textFieldController,
-                                    decoration: const InputDecoration(
-                                      hintText: "Enter Tag",
-                                    ),
-                                  ),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      child: const Text('CANCEL'),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                    ),
-                                    TextButton(
-                                      child: const Text('OK'),
-                                      onPressed: () {
-                                        tagsProvider
-                                            .addTag(_textFieldController.text);
-                                        Navigator.pop(context);
-                                      },
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          },
-                          icon: const Icon(Icons.add),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 190,
-                      width: 250,
-                      child: Consumer<TagsProvider>(
-                        builder: (context, tagsProvider, _) => ListView.builder(
-                          itemCount: tagsProvider.tags.length,
-                          itemBuilder: (context, index) {
-                            final tag = tagsProvider.tags[index];
-                            return ListTile(
-                              title: Text(tag),
-                              trailing: IconButton(
-                                onPressed: () {
-                                  tagsProvider.removeTag(index);
-                                },
-                                icon: const Icon(Icons.remove),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ],
-                );
-              } else {
-                return const Center(child: CircularProgressIndicator());
-              }
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Captured Page"),
+        actions: [
+          IconButton(
+            onPressed: () {
+              _saveAndNavigate(context);
             },
+            icon: Icon(Icons.done),
           ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: FutureBuilder<ResponseModel>(
+          future: SnapTagAPIRequest.getTags(widget.imagePath),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              final tagsProvider =
+                  Provider.of<TagsProvider>(context, listen: false);
+              tagsProvider.setTag(snapshot.data!.extractedTags);
+              tagsProvider.setImage(snapshot.data!.croppedDocument);
+
+              return Column(
+                children: [
+                  Center(
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height - 400,
+                      width: MediaQuery.of(context).size.width - 50,
+                      child: Card(
+                        child: Image.memory(
+                          base64Decode(snapshot.data!.croppedDocument),
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const TextWidget(text: "Tags"),
+                      IconButton(
+                        onPressed: () async {
+                          return showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text('Add Tag'),
+                                content: TextField(
+                                  controller: _textFieldController,
+                                  decoration: const InputDecoration(
+                                    hintText: "Enter Tag",
+                                  ),
+                                ),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: const Text('CANCEL'),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                  TextButton(
+                                    child: const Text('OK'),
+                                    onPressed: () {
+                                      tagsProvider
+                                          .addTag(_textFieldController.text);
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        icon: const Icon(Icons.add),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 190,
+                    width: 250,
+                    child: Consumer<TagsProvider>(
+                      builder: (context, tagsProvider, _) => ListView.builder(
+                        itemCount: tagsProvider.tags.length,
+                        itemBuilder: (context, index) {
+                          final tag = tagsProvider.tags[index];
+                          return ListTile(
+                            title: Text(tag),
+                            trailing: IconButton(
+                              onPressed: () {
+                                tagsProvider.removeTag(index);
+                              },
+                              icon: const Icon(Icons.remove),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          },
         ),
       ),
     );

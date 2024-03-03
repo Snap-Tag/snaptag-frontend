@@ -5,10 +5,13 @@ class UploadDone extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-        body: Center(
-            child: Column(
-      children: [Icon(Icons.check), Text("Done")],
-    )));
+    return const PopScope(
+      canPop: false,
+      child: Scaffold(
+          body: Center(
+              child: Column(
+        children: [Icon(Icons.check), Text("Done")],
+      ))),
+    );
   }
 }
