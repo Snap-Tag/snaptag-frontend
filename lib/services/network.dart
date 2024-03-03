@@ -105,7 +105,7 @@ class SnapTagAPIRequest {
 
     try {
       final FormData formData = FormData.fromMap({
-        "image_file": imageData,
+        "image_file": await MultipartFile.fromString(imageData),
         "tags": tags.join(" "), // Convert tags list to JSON string
       });
 
