@@ -106,7 +106,7 @@ class SnapTagAPIRequest {
     try {
       final FormData formData = FormData.fromMap({
         "image_file": imageData,
-        "tags": jsonEncode(tags), // Convert tags list to JSON string
+        "tags": tags.join(" "), // Convert tags list to JSON string
       });
 
       final Response response = await dio.post(
