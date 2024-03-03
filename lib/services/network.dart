@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:snaptag_frontend/models/imageModel.dart';
 import 'package:snaptag_frontend/models/responseModel.dart';
 import 'package:snaptag_frontend/models/searchedModel.dart';
+import 'package:http_parser/http_parser.dart';
 
 class SnapTagAPIRequest {
   static const serverIP = "192.168.204.144:8000";
@@ -105,8 +106,11 @@ class SnapTagAPIRequest {
     print(base64Decode(imageData));
     try {
       final FormData formData = FormData.fromMap({
-        "image_file":
-            await MultipartFile.fromString(imageData, filename: "image.png"),
+        "image_file": await MultipartFile.fromString(
+          imageData,
+          filename: "image.png",
+          contentType: MediaType("image", "png"),
+        ),
         "tags": tags.join(" "), // Convert tags list to JSON string
       });
 
