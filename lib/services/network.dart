@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:snaptag_frontend/models/imageModel.dart';
 import 'package:snaptag_frontend/models/responseModel.dart';
@@ -90,6 +92,32 @@ class SnapTagAPIRequest {
         return searchList;
       } else {
         throw Exception("No Image found");
+      }
+    } catch (e) {
+      // Handle DioError or other exceptions
+      throw Exception("Error: $e");
+    }
+  }
+
+  static Future<int> saveNote(String imageData, List<String> tags) async {
+    const String url = "http://$serverIP/uploadNote";
+    final dio = Dio();
+
+    try {
+      final FormData formData = FormData.fromMap({
+        "image_file": imageData,
+        "tags": jsonEncode(tags), // Convert tags list to JSON string
+      });
+
+      final Response response = await dio.post(
+        url,
+        data: formData,
+      );
+
+      if (response.statusCode == 200) {
+        return response.data["image_id"];
+      } else {
+        throw Exception("Failed to save note");
       }
     } catch (e) {
       // Handle DioError or other exceptions

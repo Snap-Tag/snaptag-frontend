@@ -5,8 +5,14 @@ class TagsProvider extends ChangeNotifier {
 
   List<String> get tags => _tags;
 
+  String imageData = "";
+
   void setTag(List<String> tag_list) {
     _tags = tag_list;
+  }
+
+  void setImage(String imageData) {
+    this.imageData = imageData;
   }
 
   void addTag(String tag) {
