@@ -1,12 +1,14 @@
-class Image {
-  final String imageID;
-  final String imagePath;
-  Image({
-    required this.imageID,
-    required this.imagePath,
-  });
-  factory Image.fromSqfliteDatabase(Map<String,dynamic> map) => Image(
-      imageID: map['imageID']?.toString() ?? 'null',
-      imagePath: map['imagePath']?.toString() ?? 'null');
-}
+import 'dart:typed_data';
+import 'dart:ui';
 
+class Images {
+  final String imageID;
+  final Uint8List imageData;
+  Images({
+    required this.imageID,
+    required this.imageData,
+  });
+  factory Images.fromSqfliteDatabase(Map<String, dynamic> map) => Images(
+      imageID: map['image_id']?.toString() ?? 'null',
+      imageData: map['image_data']?? 'null');
+}

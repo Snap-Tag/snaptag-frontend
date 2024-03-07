@@ -21,12 +21,14 @@ class DatabaseService {
 
   Future<Database> _initialize() async {
     final path = await fullPath;
+    // await deleteDatabase(path);
     var database = await openDatabase(
       path,
       version: 1,
       onCreate: create,
       singleInstance: true,
     );
+    print("database created");
     return database;
   }
 

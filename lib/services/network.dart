@@ -1,26 +1,148 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:dio/dio.dart';
+import 'package:snaptag_frontend/models/imageModel.dart';
 import 'package:snaptag_frontend/models/responseModel.dart';
+import 'package:snaptag_frontend/models/searchedModel.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 class SnapTagAPIRequest {
+  static const serverIP = "192.168.204.144:8000";
   static Future<ResponseModel> getTags(String imagePath) async {
-    const String url = "http://192.168.1.4:8000/snapservice";
-    final dio = Dio();
+    // const String url = "http://$serverIP/snapservice";
+    // final dio = Dio();
 
-    FormData formData = FormData.fromMap({
-      "image_file": await MultipartFile.fromFile(imagePath),
-      "content_type": "image",
-    });
+    // FormData formData = FormData.fromMap({
+    //   "image_file": await MultipartFile.fromFile(imagePath),
+    //   "content_type": "image",
+    // });
 
-    final response = await dio.post(
-      url,
-      data: formData,
-    );
+    // final response = await dio.post(
+    //   url,
+    //   data: formData,
+    // );
 
-    if (response.statusCode != 200) {
-      throw Exception("Failed to get tags");
-    }
+    // if (response.statusCode != 200) {
+    //   throw Exception("Failed to get tags");
+    // }
 
-    ResponseModel responseModel = ResponseModel.fromJson(response.data);
+    // ResponseModel responseModel = ResponseModel.fromJson(response.data);
+
+    File imageFile = File(imagePath);
+    List<int> bytes = await imageFile.readAsBytes();
+    Uint8List imageBytes = Uint8List.fromList(bytes);
+
+    ResponseModel responseModel = ResponseModel(
+        croppedDocument: base64Encode(imageBytes),
+        extractedTags: ["gaurav", "iza", "pizza"]);
     return responseModel;
   }
+
+  static Future<List<ImageModel>> getRecentNotes() async {
+    const String url = "http://$serverIP/recentNotes";
+    final dio = Dio();
+
+    try {
+      final Response response = await dio.get(url);
+
+      if (response.statusCode == 200) {
+        List<ImageModel> recentList = ImageModel.fromJsonList(response.data);
+
+        return recentList;
+      } else {
+        throw Exception("Failed to get recent notes");
+      }
+    } catch (e) {
+      // Handle DioError or other exceptions
+      throw Exception("Error: $e");
+    }
+  }
+
+  static Future<List<ImageModel>> getFavouriteNotes() async {
+    const String url =
+        "http://$serverIP/favoriteNotes"; // Adjust the URL accordingly
+    final dio = Dio();
+
+    try {
+      final Response response = await dio.get(url);
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = response.data as List<dynamic>;
+        List<ImageModel> savedList =
+            data.map((json) => ImageModel.fromJson(json)).toList();
+
+        return savedList;
+      } else {
+        throw Exception("Failed to get favourite notes");
+      }
+    } catch (e) {
+      // Handle DioError or other exceptions
+      throw Exception("Error: $e");
+    }
+  }
+
+  static Future<List<SearchedModel>> getSearchImage(String tags) async {
+    const String url = "http://$serverIP/searchNotes";
+    final dio = Dio();
+
+    final Map<String, dynamic> queryParameters = {
+      "tag": tags,
+    };
+
+    try {
+      final Response response =
+          await dio.get(url, queryParameters: queryParameters);
+
+      print(response.data);
+
+      if (response.statusCode == 200) {
+        List<SearchedModel> searchList =
+            SearchedModel.fromJsonList(response.data);
+        return searchList;
+      } else {
+        throw Exception("No Image found");
+      }
+    } catch (e) {
+      // Handle DioError or other exceptions
+      throw Exception("Error: $e");
+    }
+  }
+
+  //static Future<int> saveNote(String imageData, List<String> tags) async {
+    // const String url = "http://$serverIP/uploadNote";
+    // final dio = Dio();
+    // print(base64Decode(imageData));
+    // try {
+    //   final FormData formData = FormData.fromMap({
+    //     "image_file": await MultipartFile.fromString(
+    //       imageData,
+    //       filename: "image.png",
+    //       contentType: MediaType("image", "png"),
+    //     ),
+    //     "tags": tags.join(" "), // Convert tags list to JSON string
+    //   });
+
+    //   final Response response = await dio.post(
+    //     url,
+    //     data: formData,
+    //   );
+
+    //   if (response.statusCode == 200) {
+    //     return response.data["image_id"];
+    //   } else {
+    //     throw Exception("Failed to save note");
+    //   }
+    // } catch (e) {
+    //   // Handle DioError or other exceptions
+    //   throw Exception("Error: $e");
+    // }
+    //Uint8List imageBytes = base64Decode(imageData);
+    // insert into images table, tesma ni handle for the updated_at and created_at wala part
+    // get the recently added image's id
+    // iterate through each tag, check if the tag exists in the in table by quering and get the tag_id if exists, else insert new tag and get the id of that new tag
+    // now insert into image_tags table with the image_id and tag_id
+  //}
 }

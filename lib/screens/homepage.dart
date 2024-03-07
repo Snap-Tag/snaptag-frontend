@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:snaptag_frontend/widgets/imageslider.dart';
+import 'package:snaptag_frontend/widgets/favorite_images.dart';
+import 'package:snaptag_frontend/widgets/recent_images.dart';
 import 'package:snaptag_frontend/widgets/searchbar.dart';
 import 'package:snaptag_frontend/widgets/text_widget.dart';
 
@@ -15,9 +16,9 @@ class HomePage extends StatelessWidget {
           children: [
             SearchBarWidget(),
             TextWidget(text: "Recent Notes"),
-            ImageSlider(images: [1, 2, 3, 4, 5, 6, 7]),
+            RecentImages(),
             TextWidget(text: "Favorites"),
-            ImageSlider(images: [1, 2, 3, 4, 5, 6, 7])
+            FavoriteImages()
           ],
         ),
       ),

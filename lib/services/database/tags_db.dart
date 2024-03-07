@@ -4,30 +4,31 @@ import 'package:snaptag_frontend/models/image.dart';
 
 class TagsDB {
   Future<void> createTable(Database database) async {
-    await database.execute(""" CREATE TABLE IF NOT EXIST image (
-      imageID TEXT PRIMARY KEY,
-      imagePath TEXT NOT NULL,
-      PRIMARY KEY ("imageID" AUTOINCREMENT)
-    );""");
+    await database.execute('''DROP TABLE IF EXISTS images''');
 
-    await database.execute(""" CREATE TABLE IF NOT EXIST tags (
-      tagID TEXT PRIMARY KEY,
-      tags TEXT NOT NULL,
-      PRIMARY KEY ("tagID" AUTOINCREMENT)
-    );""");
+    await database.execute('''CREATE TABLE IF NOT EXISTS images (
+      image_id INTEGER PRIMARY KEY AUTOINCREMENT,
+      image_data BLOB,
+      favorite BOOLEAN DEFAULT 0,
+      created_at INTEGER,
+      updated_at INTEGER
+    );''');
 
-    await database.execute(""" CREATE TABLE IF NOT EXIST imageTags (
-      imageID TEXT NOT NULL,
-      tagID TEXT NOT NULL,
-      FOREIGN KEY (imageID) REFERENCES image (imageID)),
-      FOREIGN KEY (tagID) REFERENCES tags (tagID)),
-      ON UPDATE SET NULL,
-      ON DELETE SET NULL,
-    );""");
+    await database.execute('''CREATE TABLE IF NOT EXISTS tags (
+      tag_id INTEGER PRIMARY KEY AUTOINCREMENT,
+      tag_name TEXT NOT NULL
+    );''');
+
+    await database.execute('''CREATE TABLE IF NOT EXISTS image_tags (
+      image_id TEXT NOT NULL,
+      tag_id TEXT NOT NULL,
+      FOREIGN KEY (image_id) REFERENCES images (image_id) ON UPDATE CASCADE ON DELETE CASCADE,
+      FOREIGN KEY (tag_id) REFERENCES tags (tag_id) ON UPDATE CASCADE ON DELETE CASCADE
+    );''');
   }
 
-  Future<List<Image>> searchTags(String tag) async {
-    // Database database = await DatabaseService().database;
+  Future<List<Images>> searchTags(String tag) async {
+    // Database R= await DatabaseService().database;
     // dynamic tagid =
     //     await database.rawQuery('SELECT tagID FROM tags WHERE tags = $tag');
     // dynamic imageid = await database
@@ -38,47 +39,66 @@ class TagsDB {
     //     .map((image) => Image.fromSqfliteDatabase(imageid))
     //     .toList();
 
-  // Step 1: Obtain a reference to the database
-  Database database = await DatabaseService().database;
-  dynamic imagePaths = [];
-  // Step 2: Use parameterized query to prevent SQL injection
-  dynamic tagidResult = await database.rawQuery('SELECT tagID FROM tags WHERE tags = ?', [tag]);
-  List tagidList = List.from(tagidResult);
-  // Step 3: Check if tagid is not empty before proceeding with the next queries
-  if (tagidList.isEmpty) {
-    return []; // or handle the case when the tag doesn't exist
-  }
-
-  for(var tagid in tagidList)
-  {
-    // Step 4: Use proper column names and handle query results
-  dynamic imageidResult = await database.rawQuery('SELECT imageID FROM imageTags WHERE tagID = ?', tagidList[tagid]);
-  
-  // Step 5: Check if there are no images for the given tag
-  if (imageidResult.isEmpty) {
-    return []; // or handle the case when there are no images for the given tag
-  }
-
-  // Step 6: Iterate through the result and retrieve image paths
-  List imageidList = List.from(imageidResult);
-  
-
-  for (var entry in imageidList) {
-    // Step 7: Use parameterized query to prevent SQL injection
-    dynamic imagePathResult = await database.rawQuery('SELECT image_path FROM image WHERE imageID = ?', imageidList[entry]);
-    
-    // Step 8: Check if imagePathResult is not empty before extracting the path
-    if (imagePathResult.isNotEmpty) {
-      for(var imagepaths in imagePathResult){
-        imagePaths.add(imagePathResult[imagepaths]);
-      }
-      
+    // Step 1: Obtain a reference to the database
+    Database database = await DatabaseService().database;
+    dynamic imagePaths = [];
+    // Step 2: Use parameterized query to prevent SQL injection
+    dynamic tagidResult = await database
+        .rawQuery('SELECT tag_id FROM tags WHERE tags = ?', [tag]);
+    List tagidList = List.from(tagidResult);
+    // Step 3: Check if tagid is not empty before proceeding with the next queries
+    if (tagidList.isEmpty) {
+      return []; // or handle the case when the tag doesn't exist
     }
-  }
+
+    for (var tagid in tagidList) {
+      // Step 4: Use proper column names and handle query results
+      dynamic imageidResult = await database.rawQuery(
+          'SELECT image_id FROM image_tags WHERE tag_id = ?', tagidList[tagid]);
+
+      // Step 5: Check if there are no images for the given tag
+      if (imageidResult.isEmpty) {
+        return []; // or handle the case when there are no images for the given tag
+      }
+
+      // Step 6: Iterate through the result and retrieve image paths
+      List imageidList = List.from(imageidResult);
+
+      for (var entry in imageidList) {
+        // Step 7: Use parameterized query to prevent SQL injection
+        dynamic imagePathResult = await database.rawQuery(
+            'SELECT image_data FROM images WHERE image_id = ?',
+            imageidList[entry]);
+
+        // Step 8: Check if imagePathResult is not empty before extracting the path
+        if (imagePathResult.isNotEmpty) {
+          for (var imagepaths in imagePathResult) {
+            imagePaths.add(imagePathResult[imagepaths]);
+          }
+        }
+      }
+    }
+
+    // Step 9: Create Image objects from the paths
+    return imagePaths.map((path) => Images.fromSqfliteDatabase(path)).toList();
   }
 
-  // Step 9: Create Image objects from the paths
-  return imagePaths.map((path) => Image.fromSqfliteDatabase(path)).toList();
-}
+  Future<List<dynamic>> getRecentNotes() async {
+    Database database = await DatabaseService().database;
+    // dynamic hehe = await database.rawQuery("SELECT * FROM images;");
+    // print(hehe);
+    dynamic savedList =
+        await database.rawQuery('SELECT image_data FROM images LIMIT 5');
+    print(savedList);
+    return savedList.map((row) => Images.fromSqfliteDatabase(row)).toList();
+  }
 
+  Future<List<dynamic>> getFavoriteNotes() async {
+    Database database = await DatabaseService().database;
+    // dynamic hehe = await database.rawQuery("SELECT * FROM images;");
+    // print(hehe);
+    dynamic favoriteList = await database
+        .rawQuery('SELECT image_data FROM images WHERE favorite = 1');
+    return favoriteList.map((row) => Images.fromSqfliteDatabase(row)).toList();
+  }
 }
