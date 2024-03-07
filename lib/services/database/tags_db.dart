@@ -1,3 +1,7 @@
+import 'dart:ffi';
+import 'dart:typed_data';
+
+import 'package:snaptag_frontend/models/tags.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:snaptag_frontend/services/database/databaseservice.dart';
 import 'package:snaptag_frontend/models/image.dart';
@@ -40,11 +44,14 @@ class TagsDB {
     //     .toList();
 
     // Step 1: Obtain a reference to the database
+    print('hhe');
     Database database = await DatabaseService().database;
+    dynamic img = database.rawQuery('SELECT * FROM images');
+    print(img);
     dynamic imagePaths = [];
     // Step 2: Use parameterized query to prevent SQL injection
     dynamic tagidResult = await database
-        .rawQuery('SELECT tag_id FROM tags WHERE tags = ?', [tag]);
+        .rawQuery('SELECT tag_id FROM tags WHERE tag_name = ?', [tag]);
     List tagidList = List.from(tagidResult);
     // Step 3: Check if tagid is not empty before proceeding with the next queries
     if (tagidList.isEmpty) {
@@ -87,8 +94,7 @@ class TagsDB {
     Database database = await DatabaseService().database;
     // dynamic hehe = await database.rawQuery("SELECT * FROM images;");
     // print(hehe);
-    dynamic savedList =
-        await database.rawQuery('SELECT image_data FROM images LIMIT 5');
+    dynamic savedList = await database.rawQuery('SELECT * FROM images LIMIT 5');
     print(savedList);
     return savedList.map((row) => Images.fromSqfliteDatabase(row)).toList();
   }
@@ -100,5 +106,26 @@ class TagsDB {
     dynamic favoriteList = await database
         .rawQuery('SELECT image_data FROM images WHERE favorite = 1');
     return favoriteList.map((row) => Images.fromSqfliteDatabase(row)).toList();
+  }
+
+  Future saveNote(image, tags) async {
+    Database database = await DatabaseService().database;
+    final imageId = await database
+        .rawInsert("INSERT INTO images (image_data) VALUES (?)", [image]);
+
+    for (final tag in tags) {
+      final tagIdQuery = await database
+          .rawQuery("SELECT tag_id FROM tags WHERE tag_name = ?", [tag]);
+      var tagId = tagIdQuery.isNotEmpty ? tagIdQuery.first['tag_id'] : null;
+
+      if (tagId == null) {
+        tagId = await database
+            .rawInsert("INSERT INTO tags (tag_name) VALUES (?)", [tag]);
+      }
+
+      await database.rawInsert(
+          "INSERT INTO image_tags (image_id, tag_id) VALUES (?, ?)",
+          [imageId, tagId]);
+    }
   }
 }

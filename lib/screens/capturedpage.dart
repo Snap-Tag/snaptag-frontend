@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snaptag_frontend/screens/uploadDone.dart';
+import 'package:snaptag_frontend/services/database/tags_db.dart';
 import 'package:snaptag_frontend/services/network.dart';
 import 'package:snaptag_frontend/models/responseModel.dart';
 import 'package:snaptag_frontend/widgets/text_widget.dart';
@@ -134,15 +135,16 @@ class _CapturedPageState extends State<CapturedPage> {
     final imageData = tagsProvider.imageData; // Your base64-encoded image data
     final tags = tagsProvider.tags;
 
-    //try {
-    //   final imageId = await SnapTagAPIRequest.saveNote(imageData, tags);
-    //   Navigator.pushReplacement(
-    //     context,
-    //     MaterialPageRoute(builder: (context) => const UploadDone()),
-    //   );
-    // } catch (e) {
-    //   print("Error saving note: $e");
-    //   // Handle error
-    // }
+    try {
+      TagsDB tagsDB = TagsDB();
+      final imageId = await tagsDB.saveNote(imageData, tags);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const UploadDone()),
+      );
+    } catch (e) {
+      print("Error saving note: $e");
+      // Handle error
+    }
   }
 }

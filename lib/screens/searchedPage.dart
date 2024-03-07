@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:snaptag_frontend/models/image.dart';
 import 'package:snaptag_frontend/models/searchedModel.dart';
 import 'package:snaptag_frontend/screens/notesPage.dart';
+import 'package:snaptag_frontend/services/database/tags_db.dart';
 import 'package:snaptag_frontend/services/network.dart';
 
 class SearchedPage extends StatelessWidget {
@@ -12,10 +14,11 @@ class SearchedPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TagsDB tagsDB = TagsDB();
     return Scaffold(
       appBar: AppBar(title: Text(searchedString)),
-      body: FutureBuilder<List<SearchedModel>>(
-          future: SnapTagAPIRequest.getSearchImage(searchedString),
+      body: FutureBuilder(
+          future: tagsDB.searchTags(searchedString),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
@@ -42,7 +45,7 @@ class SearchedPage extends StatelessWidget {
                             width: MediaQuery.of(context).size.width - 10,
                             child: Card(
                               child: Image.memory(
-                                base64Decode(snapshot.data![index].imageData),
+                                snapshot.data![index].imageData,
                                 fit: BoxFit.contain,
                               ),
                             ),

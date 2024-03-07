@@ -1,11 +1,11 @@
 class Tags {
-  final String tagID;
-  final String tag;
+  final String tag_id;
+  final String tag_name;
   Tags({
-    required this.tagID,
-    required this.tag,
+    required this.tag_id,
+    required this.tag_name,
   });
   factory Tags.fromSqfliteDatabase(Map<String, dynamic> map) => Tags(
-      tagID: map['tagID']?.toString() ?? 'null',
-      tag: map['tag']?.toString() ?? 'null');
+      tag_id: map['tagID']?.toString() ?? 'null',
+      tag_name: map['tag']?.toString() ?? 'null');
 }
