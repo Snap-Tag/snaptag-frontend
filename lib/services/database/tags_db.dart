@@ -1,6 +1,5 @@
 import 'dart:ffi';
 import 'dart:typed_data';
-
 import 'package:snaptag_frontend/models/tags.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:snaptag_frontend/services/database/databaseservice.dart';
@@ -31,7 +30,7 @@ class TagsDB {
     );''');
   }
 
-  Future<List<Images>> searchTags(String tag) async {
+  Future<List<Images>> searchTags(String tag,Database database) async {
     // Database R= await DatabaseService().database;
     // dynamic tagid =
     //     await database.rawQuery('SELECT tagID FROM tags WHERE tags = $tag');
@@ -44,7 +43,6 @@ class TagsDB {
     //     .toList();
 
     // Step 1: Obtain a reference to the database
-    print('hhe');
     Database database = await DatabaseService().database;
     dynamic img = database.rawQuery('SELECT * FROM images');
     print(img);
