@@ -13,10 +13,13 @@ class CameraPage extends StatefulWidget {
 class _CameraPageState extends State<CameraPage> {
   late CameraController _controller;
   late Future<void> _initializeControllerFuture;
+  late CameraDescription firstCamera;
 
   @override
-  void initState() {
+  Future<void> initState() async {
     super.initState();
+    final cameras = await availableCameras();
+    firstCamera = cameras.first;
 
     _controller = CameraController(
       firstCamera,
