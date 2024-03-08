@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:snaptag_frontend/models/image.dart';
 import 'package:snaptag_frontend/services/database/tags_db.dart';
-import 'package:snaptag_frontend/services/network.dart';
 import 'package:snaptag_frontend/widgets/imageslider.dart';
 
 class FavoriteImages extends StatelessWidget {

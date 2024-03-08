@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-import 'dart:ui';
 
 class Images {
   final String imageID;
@@ -10,5 +9,5 @@ class Images {
   });
   factory Images.fromSqfliteDatabase(Map<String, dynamic> map) => Images(
       imageID: map['image_id']?.toString() ?? 'null',
-      imageData: map['image_data']?? 'null');
+      imageData: map['image_data'] ?? 'null');
 }

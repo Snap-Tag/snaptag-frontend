@@ -1,11 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:snaptag_frontend/models/image.dart';
-import 'package:snaptag_frontend/models/searchedModel.dart';
-import 'package:snaptag_frontend/screens/notesPage.dart';
+import 'package:snaptag_frontend/screens/notes_page.dart';
 import 'package:snaptag_frontend/services/database/tags_db.dart';
-import 'package:snaptag_frontend/services/network.dart';
 
 class SearchedPage extends StatelessWidget {
   final String searchedString;

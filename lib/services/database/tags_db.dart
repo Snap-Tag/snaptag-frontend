@@ -1,11 +1,20 @@
-import 'dart:ffi';
-import 'dart:typed_data';
-import 'package:snaptag_frontend/models/tags.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:snaptag_frontend/services/database/databaseservice.dart';
 import 'package:snaptag_frontend/models/image.dart';
 
 class TagsDB {
+  static Database? _database;
+
+  // Getter method to access the static database instance
+  static Future<Database> get database async {
+    if (_database != null) {
+      return _database!;
+    }
+    // Initialize the database if it's null
+    _database = await DatabaseService().database;
+    return _database!;
+  }
+
   Future<void> createTable(Database database) async {
     await database.execute('''DROP TABLE IF EXISTS images''');
 
@@ -30,7 +39,7 @@ class TagsDB {
     );''');
   }
 
-  Future<List<Images>> searchTags(String tag,Database database) async {
+  Future<List<Images>> searchTags(String tag) async {
     // Database R= await DatabaseService().database;
     // dynamic tagid =
     //     await database.rawQuery('SELECT tagID FROM tags WHERE tags = $tag');
@@ -107,21 +116,18 @@ class TagsDB {
   }
 
   Future saveNote(image, tags) async {
-    Database database = await DatabaseService().database;
-    final imageId = await database
+    final imageId = await _database!
         .rawInsert("INSERT INTO images (image_data) VALUES (?)", [image]);
 
     for (final tag in tags) {
-      final tagIdQuery = await database
+      final tagIdQuery = await _database!
           .rawQuery("SELECT tag_id FROM tags WHERE tag_name = ?", [tag]);
       var tagId = tagIdQuery.isNotEmpty ? tagIdQuery.first['tag_id'] : null;
 
-      if (tagId == null) {
-        tagId = await database
-            .rawInsert("INSERT INTO tags (tag_name) VALUES (?)", [tag]);
-      }
+      tagId ??= await _database!
+          .rawInsert("INSERT INTO tags (tag_name) VALUES (?)", [tag]);
 
-      await database.rawInsert(
+      await _database!.rawInsert(
           "INSERT INTO image_tags (image_id, tag_id) VALUES (?, ?)",
           [imageId, tagId]);
     }

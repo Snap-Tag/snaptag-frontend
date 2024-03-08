@@ -1,10 +1,6 @@
-import 'dart:convert';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:snaptag_frontend/models/image.dart';
-import 'package:snaptag_frontend/models/imageModel.dart';
-import 'package:snaptag_frontend/screens/notesPage.dart';
+import 'package:snaptag_frontend/screens/notes_page.dart';
 
 class ImageSlider extends StatelessWidget {
   final List<dynamic> images;

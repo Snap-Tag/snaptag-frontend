@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:snaptag_frontend/constants/theme.dart';
-import 'package:snaptag_frontend/screens/camerapage.dart';
+import 'package:snaptag_frontend/screens/camera_page.dart';
 import 'package:snaptag_frontend/screens/homepage.dart';
 import 'package:snaptag_frontend/screens/profilepage.dart';
 

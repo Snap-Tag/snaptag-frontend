@@ -2,15 +2,12 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snaptag_frontend/providers/tagsProvider.dart';
-import 'package:snaptag_frontend/screens/camerapage.dart';
+import 'package:snaptag_frontend/screens/camera_page.dart';
 import 'package:snaptag_frontend/widgets/dashboard.dart';
-
-late CameraDescription firstCamera;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final cameras = await availableCameras();
-  firstCamera = cameras.first;
+
   runApp(
     const SnapTag(),
   );

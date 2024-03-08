@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:snaptag_frontend/screens/searchedPage.dart';
+import 'package:snaptag_frontend/screens/searched_page.dart';
 
 class SearchBarWidget extends StatelessWidget {
   const SearchBarWidget({super.key});
