@@ -22,13 +22,13 @@ class _CapturedPageState extends State<CapturedPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Captured Page"),
+        title: const Text("Captured Page"),
         actions: [
           IconButton(
             onPressed: () {
               _saveAndNavigate(context);
             },
-            icon: Icon(Icons.done),
+            icon: const Icon(Icons.done),
           ),
         ],
       ),

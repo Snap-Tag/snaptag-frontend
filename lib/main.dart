@@ -17,7 +17,7 @@ Future<void> main() async {
 }
 
 class SnapTag extends StatelessWidget {
-  const SnapTag({Key? key});
+  const SnapTag({super.key});
 
   @override
   Widget build(BuildContext context) {
