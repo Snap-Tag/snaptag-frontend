@@ -7,20 +7,20 @@ Future<void> _displayTextInputDialog(BuildContext context) async {
     context: context,
     builder: (context) {
       return AlertDialog(
-        title: Text('TextField in Dialog'),
+        title: const Text('TextField in Dialog'),
         content: TextField(
           controller: _textFieldController,
-          decoration: InputDecoration(hintText: "Text Field in Dialog"),
+          decoration: const InputDecoration(hintText: "Text Field in Dialog"),
         ),
         actions: <Widget>[
           TextButton(
-            child: Text('CANCEL'),
+            child: const Text('CANCEL'),
             onPressed: () {
               Navigator.pop(context);
             },
           ),
           TextButton(
-            child: Text('OK'),
+            child: const Text('OK'),
             onPressed: () {
               print(_textFieldController.text);
               Navigator.pop(context);

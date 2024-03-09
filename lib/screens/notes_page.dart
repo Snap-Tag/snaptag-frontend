@@ -73,7 +73,7 @@ class _NotesPageState extends State<NotesPage> {
                           content: Text(_favorite
                               ? 'Added to Favorites'
                               : 'Removed from Favorites'),
-                          duration: Duration(seconds: 2),
+                          duration: const Duration(seconds: 2),
                         );
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         SnapTagAPIRequest.setFavorite(

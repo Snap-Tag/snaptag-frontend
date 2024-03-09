@@ -10,9 +10,9 @@ class DonePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.check, size: 48),
+            const Icon(Icons.check, size: 48),
             const SizedBox(height: 16),
-            Text("Done", style: TextStyle(fontSize: 24)),
+            const Text("Done", style: TextStyle(fontSize: 24)),
             const SizedBox(height: 32),
             ElevatedButton(
               onPressed: () {
@@ -20,7 +20,7 @@ class DonePage extends StatelessWidget {
                 Navigator.pushNamedAndRemoveUntil(
                     context, "/", ((Route<dynamic> route) => false));
               },
-              child: Text("Go to Dashboard"),
+              child: const Text("Go to Dashboard"),
             ),
           ],
         ),

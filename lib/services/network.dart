@@ -105,7 +105,7 @@ class SnapTagAPIRequest {
     print(base64Decode(imageData));
     try {
       final FormData formData = FormData.fromMap({
-        "image_file": await MultipartFile.fromString(
+        "image_file": MultipartFile.fromString(
           imageData,
           filename: "image.png",
           contentType: MediaType("image", "png"),
@@ -142,12 +142,12 @@ class SnapTagAPIRequest {
     }
   }
 
-  static Future<void> setFavorite(bool fav_val, int imageID) async {
+  static Future<void> setFavorite(bool favVal, int imageID) async {
     const String url = "http://$serverIP/setFavorite";
     final dio = Dio();
 
     final FormData formData =
-        FormData.fromMap({"fav_val": fav_val, "image_id": imageID});
+        FormData.fromMap({"fav_val": favVal, "image_id": imageID});
 
     final Response response = await dio.post(url, data: formData);
 
