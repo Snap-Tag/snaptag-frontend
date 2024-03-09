@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:snaptag_frontend/models/searchedModel.dart';
-import 'package:snaptag_frontend/screens/notesPage.dart';
+import 'package:snaptag_frontend/models/imageModel.dart';
+import 'package:snaptag_frontend/screens/notes_page.dart';
 import 'package:snaptag_frontend/services/network.dart';
 
 class SearchedPage extends StatelessWidget {
@@ -14,7 +14,7 @@ class SearchedPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(searchedString)),
-      body: FutureBuilder<List<SearchedModel>>(
+      body: FutureBuilder<List<ImageModel>>(
           future: SnapTagAPIRequest.getSearchImage(searchedString),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -32,9 +32,8 @@ class SearchedPage extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => NotesPage(
-                                      imageData:
-                                          snapshot.data![index].imageData)),
+                                  builder: (context) =>
+                                      NotesPage(image: snapshot.data![index])),
                             );
                           },
                           child: SizedBox(

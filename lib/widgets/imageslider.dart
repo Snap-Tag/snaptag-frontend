@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:snaptag_frontend/models/imageModel.dart';
-import 'package:snaptag_frontend/screens/notesPage.dart';
+import 'package:snaptag_frontend/screens/notes_page.dart';
 
 class ImageSlider extends StatelessWidget {
   final List<ImageModel> images;
@@ -22,7 +22,7 @@ class ImageSlider extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => NotesPage(imageData: i.imageData),
+                      builder: (context) => NotesPage(image: i),
                     ));
               },
               child: Container(

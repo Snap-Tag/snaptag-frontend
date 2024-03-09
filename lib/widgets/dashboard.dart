@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:snaptag_frontend/constants/theme.dart';
-import 'package:snaptag_frontend/screens/camerapage.dart';
-import 'package:snaptag_frontend/screens/homepage.dart';
-import 'package:snaptag_frontend/screens/profilepage.dart';
+import 'package:snaptag_frontend/screens/camera_page.dart';
+import 'package:snaptag_frontend/screens/home_page.dart';
+import 'package:snaptag_frontend/screens/about_page.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -17,7 +17,7 @@ class _DashboardState extends State<Dashboard> {
 
   List<Widget> screens = [
     const HomePage(),
-    const ProfilePage(),
+    const AboutPage(),
     const CameraPage()
   ];
 
@@ -44,7 +44,7 @@ class _DashboardState extends State<Dashboard> {
               }),
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile")
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: "About Us")
           ]),
     );
   }

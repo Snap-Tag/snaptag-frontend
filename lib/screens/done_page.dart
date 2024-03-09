@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class UploadDone extends StatelessWidget {
-  const UploadDone({Key? key}) : super(key: key);
+class DonePage extends StatelessWidget {
+  const DonePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,8 @@ class UploadDone extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 // Navigate to Dashboard using named route "/"
-                Navigator.pushNamed(context, "/");
+                Navigator.pushNamedAndRemoveUntil(
+                    context, "/", ((Route<dynamic> route) => false));
               },
               child: Text("Go to Dashboard"),
             ),

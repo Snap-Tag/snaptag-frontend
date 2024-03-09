@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:snaptag_frontend/screens/uploadDone.dart';
+import 'package:snaptag_frontend/screens/done_page.dart';
 import 'package:snaptag_frontend/services/network.dart';
 import 'package:snaptag_frontend/models/responseModel.dart';
 import 'package:snaptag_frontend/widgets/text_widget.dart';
-import 'package:snaptag_frontend/providers/tagsProvider.dart';
+import 'package:snaptag_frontend/providers/tags_provider.dart';
 
 class CapturedPage extends StatefulWidget {
   final String imagePath;
@@ -136,10 +136,10 @@ class _CapturedPageState extends State<CapturedPage> {
     print(imageData);
 
     try {
-      final imageId = await SnapTagAPIRequest.saveNote(imageData, tags);
+      await SnapTagAPIRequest.saveNote(imageData, tags);
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const UploadDone()),
+        MaterialPageRoute(builder: (context) => const DonePage()),
       );
     } catch (e) {
       print("Error saving note: $e");

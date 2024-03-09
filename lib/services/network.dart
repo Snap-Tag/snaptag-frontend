@@ -3,11 +3,10 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:snaptag_frontend/models/imageModel.dart';
 import 'package:snaptag_frontend/models/responseModel.dart';
-import 'package:snaptag_frontend/models/searchedModel.dart';
 import 'package:http_parser/http_parser.dart';
 
 class SnapTagAPIRequest {
-  static const serverIP = "localhost:8000";
+  static const serverIP = "10.0.2.2:8000";
 
   static Future<ResponseModel> getTags(String imagePath) async {
     const String url = "http://$serverIP/snapservice";
@@ -74,7 +73,7 @@ class SnapTagAPIRequest {
     }
   }
 
-  static Future<List<SearchedModel>> getSearchImage(String tags) async {
+  static Future<List<ImageModel>> getSearchImage(String tags) async {
     const String url = "http://$serverIP/searchNotes";
     final dio = Dio();
 
@@ -89,8 +88,7 @@ class SnapTagAPIRequest {
       print(response.data);
 
       if (response.statusCode == 200) {
-        List<SearchedModel> searchList =
-            SearchedModel.fromJsonList(response.data);
+        List<ImageModel> searchList = ImageModel.fromJsonList(response.data);
         return searchList;
       } else {
         throw Exception("No Image found");
@@ -128,6 +126,33 @@ class SnapTagAPIRequest {
     } catch (e) {
       // Handle DioError or other exceptions
       throw Exception("Error: $e");
+    }
+  }
+
+  static Future<void> deleteNote(int imageID) async {
+    const String url = "http://$serverIP/deleteNote";
+    final dio = Dio();
+
+    final FormData formData = FormData.fromMap({"image_id": imageID});
+
+    final Response response = await dio.post(url, data: formData);
+
+    if (response.statusCode != 200) {
+      throw Exception("Failed to delete note");
+    }
+  }
+
+  static Future<void> setFavorite(bool fav_val, int imageID) async {
+    const String url = "http://$serverIP/setFavorite";
+    final dio = Dio();
+
+    final FormData formData =
+        FormData.fromMap({"fav_val": fav_val, "image_id": imageID});
+
+    final Response response = await dio.post(url, data: formData);
+
+    if (response.statusCode != 200) {
+      throw Exception("Failed to delete note");
     }
   }
 }
