@@ -32,17 +32,17 @@ class _CapturedPageState extends State<CapturedPage> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: FutureBuilder<ResponseModel>(
-          future: SnapTagAPIRequest.getTags(widget.imagePath),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              final tagsProvider =
-                  Provider.of<TagsProvider>(context, listen: false);
-              tagsProvider.setTag(snapshot.data!.extractedTags);
-              tagsProvider.setImage(snapshot.data!.croppedDocument);
+      body: FutureBuilder<ResponseModel>(
+        future: SnapTagAPIRequest.getTags(widget.imagePath),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            final tagsProvider =
+                Provider.of<TagsProvider>(context, listen: false);
+            tagsProvider.setTag(snapshot.data!.extractedTags);
+            tagsProvider.setImage(snapshot.data!.croppedDocument);
 
-              return Column(
+            return SingleChildScrollView(
+              child: Column(
                 children: [
                   Center(
                     child: SizedBox(
@@ -119,12 +119,12 @@ class _CapturedPageState extends State<CapturedPage> {
                     ),
                   ),
                 ],
-              );
-            } else {
-              return const Center(child: CircularProgressIndicator());
-            }
-          },
-        ),
+              ),
+            );
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
+        },
       ),
     );
   }

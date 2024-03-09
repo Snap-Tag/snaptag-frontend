@@ -31,9 +31,10 @@ class _HomePageState extends State<HomePage> {
             children: [
               const SearchBarWidget(),
               const TextWidget(text: "Recent Notes"),
-              RecentImages(key: recentImagesKey),
+              SizedBox(height: 300, child: RecentImages(key: recentImagesKey)),
               const TextWidget(text: "Favorites"),
-              FavoriteImages(key: favoriteImagesKey),
+              SizedBox(
+                  height: 300, child: FavoriteImages(key: favoriteImagesKey)),
             ],
           ),
         ),
