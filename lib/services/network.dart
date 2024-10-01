@@ -6,10 +6,10 @@ import 'package:snaptag_frontend/models/responseModel.dart';
 import 'package:http_parser/http_parser.dart';
 
 class SnapTagAPIRequest {
-  static const serverIP = "snaptag.anmup.online";
+  static const serverIP = "192.168.1.125:8000";
 
   static Future<ResponseModel> getTags(String imagePath) async {
-    const String url = "https://$serverIP/snapservice";
+    const String url = "http://$serverIP/snapservice";
     final dio = Dio();
 
     FormData formData = FormData.fromMap({
